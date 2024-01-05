@@ -4,19 +4,28 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "dev": "nodemon src/app.ts"
+    "dev": "nodemon src/app.ts",
+    "typeorm:generate": "npx typeorm-ts-node-esm migration:generate ./src/database/migrations/extended-user-fields -d ./src/database/data-source-local.ts",
+    "typeorm:migrate": "npx typeorm-ts-node-esm migration:run -d ./src/database/data-source-local.ts",
+    "typeorm:revert": "npx typeorm-ts-node-esm migration:revert -d ./src/database/data-source-local.ts",
+    "typeorm:drop": "npx typeorm-ts-node-esm schema:drop -d ./src/database/data-source-local.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/dotenv": "^8.2.0",
-    "@types/mongoose": "^5.11.97",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "mongoose": "^8.0.3",
+    "express": "^4.18.2",
     "node-telegram-bot-api": "^0.64.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "pg": "^8.11.3",
+    "typeorm": "^0.3.19"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.6",
     "@types/node-telegram-bot-api": "^0.64.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

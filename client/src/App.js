@@ -4,8 +4,8 @@ import {useEffect, useState} from "react";
 const tg = window.Telegram.WebApp;
 const initialFormData = {
     date: "",
-    price: "",
-    type: "",
+    amount: "",
+    category: "",
 };
 
 
@@ -14,7 +14,7 @@ function App() {
     const [formData, setFormData] = useState(initialFormData);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -25,14 +25,26 @@ function App() {
         e.preventDefault();
 
         // Проверка на заполненность всех обязательных полей
-        if (!formData.date || !formData.price || !formData.type) {
+        if (!formData.date || !formData.amount || !formData.category) {
             alert("Please fill in all required fields.");
             return;
         }
 
+        // const userId = tg.initData.user.id;
+
+        formData.userId = 951400532;
+        formData.category = 1;
+
         // Отправка данных, обработка формы и т.д.
         console.log("Form submitted:", formData);
-        tg.sendData(JSON.stringify(formData));
+        fetch('http://localhost:3200/api/add-expenses', {
+            method: 'POST', headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData)
+        }).then(r => {
+            r.json().then(res => console.log(res))
+        })
     };
 
     useEffect(() => {
@@ -51,25 +63,25 @@ function App() {
                         required
                     />
                 </label>
-                <br />
+                <br/>
 
                 <label>
                     Amount:
                     <input
                         type="number"
-                        name="price"
-                        value={formData.price}
+                        name="amount"
+                        value={formData.amount}
                         onChange={handleChange}
                         required
                     />
                 </label>
-                <br />
+                <br/>
 
                 <label>
                     Category:
                     <select
-                        name="type"
-                        value={formData.type}
+                        name="category"
+                        value={formData.category}
                         onChange={handleChange}
                         required
                     >
@@ -79,7 +91,7 @@ function App() {
                         <option value="option3">Option 3</option>
                     </select>
                 </label>
-                <br />
+                <br/>
 
                 <button type="submit">Submit</button>
             </form>
