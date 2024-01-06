@@ -31,9 +31,10 @@ function App() {
         }
 
         // const userId = tg.initData.user.id;
-        console.log(tg?.initData);
+        console.log(tg?.initDataUnsafe?.user?.id);
 
-        formData.userId = 951400532;
+
+        formData.userId = tg?.initDataUnsafe?.user?.id;
         formData.category = 1;
 
         // Отправка данных, обработка формы и т.д.
@@ -44,7 +45,11 @@ function App() {
             },
             body: JSON.stringify(formData)
         }).then(r => {
-            r.json().then(res => console.log(res))
+            r.json().then(res => {
+                    console.log(res)
+                    tg.close()
+                }
+            )
         })
     };
 
