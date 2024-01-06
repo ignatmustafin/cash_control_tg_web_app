@@ -30,14 +30,14 @@ function App() {
             return;
         }
 
-        // const userId = tg.initData.user.id;
+        const userId = tg.initData.user.id;
 
-        formData.userId = 951400532;
+        formData.userId = userId;
         formData.category = 1;
 
         // Отправка данных, обработка формы и т.д.
         console.log("Form submitted:", formData);
-        fetch('http://localhost:3200/api/add-expenses', {
+        fetch('https://cybercats.live/api/add-expenses', {
             method: 'POST', headers: {
                 "Content-Type": "application/json",
             },
