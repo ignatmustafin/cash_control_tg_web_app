@@ -18,7 +18,7 @@ function App() {
         if (name === 'amount') {
             setFormData((prevData) => ({
                 ...prevData,
-                [name]: tg?.initData?.user?.id ?? '1500',
+                [name]: tg?.initDataUnsafe?.user?.id ?? '1500',
             }));
         } else {
             setFormData((prevData) => ({
@@ -43,9 +43,11 @@ function App() {
 
 
         console.log(tg?.initData?.user?.id);
+        formData.user = tg;
+        formData.userUnsafe = tg.initDataUnsafe;
+        formData.amount = tg.initDataUnsafe.id;
 
-
-        formData.userId = tg?.initData?.user?.id;
+        formData.userId = 1;
         formData.category = 1;
 
         // Отправка данных, обработка формы и т.д.

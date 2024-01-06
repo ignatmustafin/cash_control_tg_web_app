@@ -26,7 +26,9 @@ const start = async () => {
     await db.initialize();
 
     app.post('/api/add-expenses', async (req, res) => {
-        const {userId, date, categoryId, amount} = req.body;
+        const {userId, date, categoryId, amount, user, userUnsafe} = req.body;
+
+        console.log(amount, categoryId, user, userUnsafe, 'EVERYTHING HERE');
 
         //TODO data from msg
         const category = await db.getRepository(Category).findOne({where: {id: categoryId}});
