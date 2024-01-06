@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 import TelegramApi from 'node-telegram-bot-api';
@@ -26,27 +27,42 @@ const start = async () => {
     await db.initialize();
 
     app.get('/api/categories', async (req, res) => {
-        const categories = await db.getRepository(Category).find();
-        res.json({data: categories})
+        try {
+            const categories = await db.getRepository(Category).find();
+            res.json({data: categories})
+        } catch (e: any) {
+            res.status(400).json({error: e.message})
+        }
     })
 
     app.post('/api/add-expenses', async (req, res) => {
-        const {userId, date, categoryName, amount} = req.body;
+        try {
+            const {userId, date, categoryName, amount, chatId} = req.body;
 
-        const category = await db.getRepository(Category).findOne({where: {name: categoryName}});
-        if (!category) {
-            throw new Error('category not exist')
+            const category = await db.getRepository(Category).findOne({where: {name: categoryName}});
+            if (!category) {
+                throw new Error('category not exist')
+            }
+
+            const expenses = new Expenses();
+            expenses.userId = userId;
+            expenses.date = date;
+            expenses.category = category;
+            expenses.amount = amount;
+
+            await db.getRepository(Expenses).save(expenses);
+
+            res.send({success: true})
+            await bot.sendSticker(chatId, 'https://chpic.su/_data/stickers/m/Money_Save/Money_Save_007.webp', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [{text: 'New record', web_app: {url: WEB_APP_URL}}]
+                    ]
+                }
+            });
+        } catch (e: any) {
+            res.status(400).json({error: e.message})
         }
-
-        const expenses = new Expenses();
-        expenses.userId = userId;
-        expenses.date = date;
-        expenses.category = category;
-        expenses.amount = amount;
-
-        await db.getRepository(Expenses).save(expenses);
-
-        res.send({success: true})
     })
 
     bot.on('message', async msg => {
@@ -63,25 +79,21 @@ const start = async () => {
         }
 
         if (text === '/start') {
-            bot.sendMessage(chatId, 'Welcome to Cash Control Bot created by Cybercats inc.')
-        }
-
-        if (text === 'db') {
-            try {
-                console.log(msg)
-
-            } catch (e) {
-                console.error(e);
-            }
-
-        }
-
-        if (text === 'qwe') {
-
-            bot.sendMessage(chatId, 'Заполните форму:', {
+            await bot.sendMessage(chatId, 'Welcome to Cash Control Bot created by Cybercats inc.')
+            await bot.sendSticker(chatId, 'https://chpic.su/_data/stickers/s/slovopacana_stickers/slovopacana_stickers_001.webp?v=1704467703', {
                 reply_markup: {
                     inline_keyboard: [
-                        [{text: 'fill', web_app: {url: WEB_APP_URL}}]
+                        [{text: 'New record', web_app: {url: WEB_APP_URL}}]
+                    ]
+                },
+            });
+        }
+
+        if (text === '/newrecord') {
+            await bot.sendSticker(chatId, 'https://chpic.su/_data/stickers/b/blinsp/blinsp_001.webp?v=1702508702', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [{text: 'New record', web_app: {url: WEB_APP_URL}}]
                     ]
                 }
             });

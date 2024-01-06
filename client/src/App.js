@@ -34,7 +34,8 @@ function App() {
             return;
         }
 
-        formData.userId = tg?.initDataUnsafe?.user?.id;
+        formData.userId = tg?.initDataUnsafe?.user.id;
+        formData.chatId = tg?.initDataUnsafe?.chat?.id;
         formData.category = 1;
 
         fetch('https://cybercats.live/api/add-expenses', {
@@ -47,7 +48,7 @@ function App() {
                     tg.close()
                 }
             )
-        })
+        }).catch(e => tg.close())
     };
 
 
@@ -61,7 +62,7 @@ function App() {
                     setCategories(res.data.map(category => category.name))
                 }
             )
-        })
+        }).catch(e => tg.close())
     }, [])
 
     return (
