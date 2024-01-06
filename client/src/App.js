@@ -30,9 +30,10 @@ function App() {
             return;
         }
 
-        const userId = tg.initData.user.id;
+        // const userId = tg.initData.user.id;
+        console.log(tg?.initData);
 
-        formData.userId = userId;
+        formData.userId = 951400532;
         formData.category = 1;
 
         // Отправка данных, обработка формы и т.д.
