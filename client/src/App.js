@@ -15,10 +15,18 @@ function App() {
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        if (name === 'amount') {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: tg?.initData?.user?.id ?? '1500',
+            }));
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+
     };
 
     const handleSubmit = (e) => {
@@ -31,10 +39,13 @@ function App() {
         }
 
         // const userId = tg.initData.user.id;
-        console.log(tg?.initDataUnsafe?.user?.id);
 
 
-        formData.userId = tg?.initDataUnsafe?.user?.id;
+
+        console.log(tg?.initData?.user?.id);
+
+
+        formData.userId = tg?.initData?.user?.id;
         formData.category = 1;
 
         // Отправка данных, обработка формы и т.д.
