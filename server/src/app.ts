@@ -1,15 +1,17 @@
-import TelegramApi from 'node-telegram-bot-api';
 import * as dotenv from 'dotenv';
+dotenv.config();
+
+import TelegramApi from 'node-telegram-bot-api';
 import {Category} from "./database/entities/categories";
 import db from './database'
 import {Expenses} from "./database/entities/expenses";
 import express from "express"
 import cors from 'cors'
 
-dotenv.config();
 const BOT_TOKEN = process.env.TG_BOT_TOKEN || '';
-const DB_URI = process.env.DB_URI || '';
-const WEB_APP_URL = 'https://67c0-109-248-149-240.ngrok-free.app/';
+const WEB_APP_URL = process.env.WEB_APP_URL || '';
+
+console.log(WEB_APP_URL, 'WEB APP URL HEREHERE')
 
 const bot = new TelegramApi(BOT_TOKEN, {polling: true});
 

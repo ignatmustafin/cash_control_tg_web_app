@@ -1,0 +1,51 @@
+version: '3.9'
+services:
+  postgres:
+    container_name: cash_control_postgres
+    image: postgres
+    env_file:
+      - server/.env
+    ports:
+      - "5432:5432"
+
+  server_app:
+    container_name: cash_control_server
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - "3200:3200"
+    depends_on:
+      - postgres
+    env_file:
+      - server/.env
+    command: sh -c "npm run typeorm:migrate && npm run production"
+
+  web_app:
+    container_name: cash_control_web
+    build:
+      context: client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client/build:/app/build
+    command: sh -c "npm run build"
+
+  nginx:
+    container_name: cash_control_nginx
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./client/build:/app/web/build
+    ports:
+      - "80:80"
+    depends_on:
+      - server_app
+      - web_app
+
+  certbot:
+    container_name: cash_control_certbot
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

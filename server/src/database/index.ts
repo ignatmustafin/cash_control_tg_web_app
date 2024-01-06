@@ -1,3 +1,3 @@
-import DataSourceLocal from "./data-source-local";
+import DataSourceLocal from "./data-source";
 
 export default DataSourceLocal;

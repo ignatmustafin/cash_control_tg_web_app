@@ -5,10 +5,12 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "nodemon src/app.ts",
-    "typeorm:generate": "npx typeorm-ts-node-esm migration:generate ./src/database/migrations/extended-user-fields -d ./src/database/data-source-local.ts",
-    "typeorm:migrate": "npx typeorm-ts-node-esm migration:run -d ./src/database/data-source-local.ts",
-    "typeorm:revert": "npx typeorm-ts-node-esm migration:revert -d ./src/database/data-source-local.ts",
-    "typeorm:drop": "npx typeorm-ts-node-esm schema:drop -d ./src/database/data-source-local.ts"
+    "build": "tsc",
+    "production": "node build/app.js",
+    "typeorm:generate": "npx typeorm-ts-node-esm migration:generate ./src/database/migrations/categories-seed -d src/database/data-source.ts",
+    "typeorm:migrate": "npx typeorm-ts-node-esm migration:run -d src/database/data-source.ts",
+    "typeorm:revert": "npx typeorm-ts-node-esm migration:revert -d src/database/data-source.ts",
+    "typeorm:drop": "npx typeorm-ts-node-esm schema:drop -d src/database/data-source.ts"
   },
   "author": "",
   "license": "ISC",
