@@ -52,7 +52,6 @@ const start = async () => {
 
             await db.getRepository(Expenses).save(expenses);
 
-            res.send({success: true})
             await bot.sendSticker(chatId, 'https://chpic.su/_data/stickers/m/Money_Save/Money_Save_007.webp', {
                 reply_markup: {
                     inline_keyboard: [
@@ -60,6 +59,7 @@ const start = async () => {
                     ]
                 }
             });
+            res.send({success: true})
         } catch (e: any) {
             res.status(400).json({error: e.message})
         }
