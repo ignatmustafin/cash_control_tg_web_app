@@ -11,21 +11,17 @@ const initialFormData = {
 
 function App() {
 
+
     const [formData, setFormData] = useState(initialFormData);
+    const [categories, setCategories] = useState([]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
-        if (name === 'amount') {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: tg?.initDataUnsafe?.user?.id ?? '1500',
-            }));
-        } else {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
-        }
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+
 
     };
 
@@ -38,20 +34,9 @@ function App() {
             return;
         }
 
-        // const userId = tg.initData.user.id;
-
-
-
-        console.log(tg?.initData?.user?.id);
-        formData.user = tg;
-        formData.userUnsafe = tg.initDataUnsafe;
-        formData.amount = tg.initDataUnsafe.id;
-
-        formData.userId = 1;
+        formData.userId = tg?.initDataUnsafe?.user?.id;
         formData.category = 1;
 
-        // Отправка данных, обработка формы и т.д.
-        console.log("Form submitted:", formData);
         fetch('https://cybercats.live/api/add-expenses', {
             method: 'POST', headers: {
                 "Content-Type": "application/json",
@@ -59,14 +44,24 @@ function App() {
             body: JSON.stringify(formData)
         }).then(r => {
             r.json().then(res => {
-                    console.log(res)
                     tg.close()
                 }
             )
         })
     };
 
+
     useEffect(() => {
+        fetch('https://cybercats.live/api/categories', {
+            method: 'GET', headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(r => {
+            r.json().then(res => {
+                    setCategories(res.data.map(category => category.name))
+                }
+            )
+        })
     }, [])
 
     return (
@@ -104,10 +99,7 @@ function App() {
                         onChange={handleChange}
                         required
                     >
-                        <option value="">Select Type</option>
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
+                        {categories.map(category => <option key={category} value={category}>{category}</option>)}
                     </select>
                 </label>
                 <br/>

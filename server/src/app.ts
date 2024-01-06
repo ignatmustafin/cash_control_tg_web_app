@@ -25,14 +25,15 @@ const start = async () => {
 
     await db.initialize();
 
+    app.get('/api/categories', async (req, res) => {
+        const categories = await db.getRepository(Category).find();
+        res.json({data: categories})
+    })
+
     app.post('/api/add-expenses', async (req, res) => {
-        const {userId, date, categoryId, amount, user, userUnsafe} = req.body;
+        const {userId, date, categoryName, amount} = req.body;
 
-        console.log(amount, categoryId, user, userUnsafe, 'EVERYTHING HERE');
-
-        //TODO data from msg
-        const category = await db.getRepository(Category).findOne({where: {id: categoryId}});
-
+        const category = await db.getRepository(Category).findOne({where: {name: categoryName}});
         if (!category) {
             throw new Error('category not exist')
         }
