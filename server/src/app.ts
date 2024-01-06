@@ -77,7 +77,7 @@ const start = async () => {
 
             bot.sendMessage(chatId, 'Заполните форму:', {
                 reply_markup: {
-                    keyboard: [
+                    inline_keyboard: [
                         [{text: 'fill', web_app: {url: WEB_APP_URL}}]
                     ]
                 }
