@@ -37,7 +37,10 @@ const start = async () => {
 
     app.post('/api/add-expenses', async (req, res) => {
         try {
-            const {userId, date, categoryName, amount, chatId} = req.body;
+            const {userId, date, categoryName, amount, chatId, test} = req.body;
+
+            console.log(test);
+            console.log(chatId, 'CHAT ID')
 
             const category = await db.getRepository(Category).findOne({where: {name: categoryName}});
             if (!category) {
@@ -69,6 +72,8 @@ const start = async () => {
         const text = msg.text;
         const chatId = msg.chat.id;
         const userId = msg.from?.id ? msg.from.id : null;
+
+        console.log(chatId, 'CHAT ID')
 
         if (!userId) {
             throw new Error('no user id');

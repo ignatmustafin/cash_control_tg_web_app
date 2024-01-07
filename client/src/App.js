@@ -34,6 +34,8 @@ function App() {
             return;
         }
 
+        formData.test = tg?.initDataUnsafe;
+
         formData.userId = tg?.initDataUnsafe?.user.id;
         formData.chatId = tg?.initDataUnsafe?.chat?.id;
         formData.category = 1;
