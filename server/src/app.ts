@@ -22,6 +22,8 @@ const app = express()
 app.use(express.json())
 app.use(cors());
 
+const APP_DATA_TEMP: {userId: number; chatId: number}[] = []; // replace with redis
+
 const start = async () => {
 
     await db.initialize();
@@ -37,10 +39,12 @@ const start = async () => {
 
     app.post('/api/add-expenses', async (req, res) => {
         try {
-            const {userId, date, categoryName, amount, chatId, test} = req.body;
+            const {userId, date, categoryName, amount} = req.body;
+            const chatId = APP_DATA_TEMP.find(item => item.userId === userId)?.chatId;
 
-            console.log(test);
-            console.log(chatId, 'CHAT ID')
+            if (!chatId) {
+                throw new Error('Chat id not found')
+            }
 
             const category = await db.getRepository(Category).findOne({where: {name: categoryName}});
             if (!category) {
@@ -73,10 +77,12 @@ const start = async () => {
         const chatId = msg.chat.id;
         const userId = msg.from?.id ? msg.from.id : null;
 
-        console.log(chatId, 'CHAT ID')
-
         if (!userId) {
             throw new Error('no user id');
+        }
+
+        if (!APP_DATA_TEMP.find(item => item.userId === userId)) {
+            APP_DATA_TEMP.push({userId, chatId})
         }
 
         if (msg?.web_app_data?.data) {

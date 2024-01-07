@@ -34,11 +34,7 @@ function App() {
             return;
         }
 
-        formData.test = tg;
-
         formData.userId = tg?.initDataUnsafe?.user.id;
-        formData.chatId = tg?.initDataUnsafe?.chat?.id;
-        formData.category = 1;
 
         fetch('https://cybercats.live/api/add-expenses', {
             method: 'POST', headers: {
@@ -100,6 +96,7 @@ function App() {
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
+                        defaultChecked={categories[0]}
                         required
                     >
                         {categories.map(category => <option key={category} value={category}>{category}</option>)}
