@@ -54,7 +54,7 @@ function App() {
 
 
     useEffect(() => {
-        fetch('http://localhost:3200/api/categories', {
+        fetch('https://cybercats.live/api/categories', {
             method: 'GET', headers: {
                 "Content-Type": "application/json",
             }
