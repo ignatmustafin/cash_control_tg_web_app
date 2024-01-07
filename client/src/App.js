@@ -17,6 +17,7 @@ function App() {
 
     const handleChange = (e) => {
         const {name, value} = e.target;
+        console.log(name, value)
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -27,6 +28,8 @@ function App() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        console.log(formData)
 
         // Проверка на заполненность всех обязательных полей
         if (!formData.date || !formData.amount || !formData.categoryName) {
@@ -51,13 +54,17 @@ function App() {
 
 
     useEffect(() => {
-        fetch('https://cybercats.live/api/categories', {
+        fetch('http://localhost:3200/api/categories', {
             method: 'GET', headers: {
                 "Content-Type": "application/json",
             }
         }).then(r => {
             r.json().then(res => {
                     setCategories(res.data.map(category => category.name))
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        categoryName: res.data[0].name,
+                    }));
                 }
             )
         }).catch(e => tg.close())
@@ -93,7 +100,7 @@ function App() {
                 <label>
                     Category:
                     <select
-                        name="category"
+                        name="categoryName"
                         value={formData.categoryName}
                         onChange={handleChange}
                         defaultChecked={categories[0]}
