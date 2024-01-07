@@ -5,7 +5,7 @@ const tg = window.Telegram.WebApp;
 const initialFormData = {
     date: "",
     amount: "",
-    category: "",
+    categoryName: "",
 };
 
 
@@ -29,7 +29,7 @@ function App() {
         e.preventDefault();
 
         // Проверка на заполненность всех обязательных полей
-        if (!formData.date || !formData.amount || !formData.category) {
+        if (!formData.date || !formData.amount || !formData.categoryName) {
             alert("Please fill in all required fields.");
             return;
         }
@@ -94,7 +94,7 @@ function App() {
                     Category:
                     <select
                         name="category"
-                        value={formData.category}
+                        value={formData.categoryName}
                         onChange={handleChange}
                         defaultChecked={categories[0]}
                         required
