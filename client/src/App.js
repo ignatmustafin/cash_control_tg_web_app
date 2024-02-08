@@ -39,7 +39,7 @@ function App() {
 
         formData.userId = tg?.initDataUnsafe?.user.id;
 
-        fetch('https://cybercats.live/api/add-expenses', {
+        fetch('https://cybercats.live:444/api/add-expenses', {
             method: 'POST', headers: {
                 "Content-Type": "application/json",
             },
@@ -54,7 +54,7 @@ function App() {
 
 
     useEffect(() => {
-        fetch('https://cybercats.live/api/categories', {
+        fetch('https://cybercats.live:444/api/categories', {
             method: 'GET', headers: {
                 "Content-Type": "application/json",
             }

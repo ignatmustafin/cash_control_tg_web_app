@@ -6,7 +6,7 @@ services:
     env_file:
       - server/.env
     ports:
-      - "5432:5432"
+      - "6543:5432"
 
   server_app:
     container_name: cash_control_server
@@ -40,8 +40,8 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     ports:
-      - "80:80"
-      - "443:443"
+      - "81:80"
+      - "444:443"
     depends_on:
       - server_app
       - web_app
